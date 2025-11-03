@@ -1,3 +1,66 @@
+#include <stdio.h>
+#include <string.h>
+
+#define TAM_NOME 30
+#define TAM_COR 10
+// ===== Definição da Struct =====
+
+struct Territorio {
+	char nome[TAM_NOME];
+	char cor[TAM_COR];
+	int tropas;
+};
+
+// ===== Função para limpar Buffer de entrada =====
+
+void limparBufferEntrada () {
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF);
+};
+
+
+// ===== Fução principal (main) =====
+
+int main() {
+	struct Territorio Tropas[100];
+	int totalTropas = 0;
+
+	// ===== Laço principal do menu =====
+
+	// Cadastro de 5 tropas
+	int c;
+	for(c = 0; c < 5; c++) {
+		printf("=================================\n");
+		printf("====CADASTRANDO TERRITÓRIO %d====\n", c + 1);
+		printf("=================================\n");
+
+		printf("Nome do Território: ");
+		fgets(Tropas[totalTropas].nome, TAM_NOME, stdin);
+
+		printf("Cor do Exercito: ");
+		fgets(Tropas[totalTropas].cor, TAM_COR, stdin);
+
+		printf("Número de Tropas: ");
+		scanf("%d", &Tropas[totalTropas].tropas);
+		limparBufferEntrada();
+	
+		totalTropas++;
+	
+		printf("\nTropa Cadastrada!!\n");
+	};
+	// ===== Listando todas as tropas cadastradas =====
+	printf("\n========================================\n");
+	printf("===== MAPA DO MUNDO - ESTADO ATUAL =====\n");
+	printf("========================================\n");
+	for (c = 0; c < totalTropas; c++){ 
+    		printf("TERRITÓRIO %d:\n", c + 1); 
+    
+    		printf("Nome: %s\n", Tropas[c].nome);
+    		printf("Dominado por: Exercito %s\n", Tropas[c].cor);
+    		printf("Tropas: %d\n", Tropas[c].tropas);
+    		printf("\n");
+	};
+};
 // ============================================================================
 //         PROJETO WAR ESTRUTURADO - DESAFIO DE CÓDIGO
 // ============================================================================
@@ -31,7 +94,7 @@
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
-int main() {
+// int main() {
     // 1. Configuração Inicial (Setup):
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
@@ -51,8 +114,8 @@ int main() {
     // 3. Limpeza:
     // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
 
-    return 0;
-}
+//    return 0;
+// }
 
 // --- Implementação das Funções ---
 
