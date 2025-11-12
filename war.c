@@ -65,10 +65,35 @@ void atacar (struct Territorio* atacante, struct Territorio* defensor) {
 	printf("O atacante %s rolou um dado e tirou: %d\n", atacante->nome, dadoAtacante);
 	printf("O defensor %s roulou um dado e tirou: %d\n", defensor->nome, dadoDefensor);
 
+	// Verificação para ver se as tropas atacantes são da mesma cor das tropas defensoras
+	if (strcmp(atacante->cor, defensor->cor) == 0){
+		printf("ERRO: Você não pode atacar um território do seu próprio exército!");
+		return;
+	};
+
 	// Verificação para ver se os territórios tem pelo menos 1 tropa
 	if (atacante->tropas < 1 || defensor->tropas < 1) {
 		printf("ERRO: Território com tropas insuficientes!\n");
         return;
+	};
+
+	// Verifica quem foi o vencedor do confronto
+	if (dadoAtacante > dadoDefensor) {
+		printf("VITÓRIA DO ATAQUE! O defensor perdeu 1 tropa.\n");
+		defensor->tropas--;
+		if (defensor->tropas == 0) {
+			defensor->tropas = 1;
+			strcpy(defensor->cor, atacante->cor);
+			printf("CONQUISTA! O território %s foi dominado pelo Exército %s!\n", defensor->nome, atacante->cor);
+		};
+	} else {
+		printf("VITÓRIA DO DEFENSOR! O atacante perdeu 1 tropa.\n");
+		atacante->tropas--;
+		if (atacante->tropas == 0) {
+			atacante->tropas = 1;
+			strcpy(atacante->cor, defensor->cor);
+			printf("CONQUISTA! O território %s foi dominado pelo Exército %s!\n0", atacante->nome, defensor->cor);
+		};
 	};
 };
 
@@ -78,6 +103,7 @@ int main() {
 	struct Territorio *tropas;
 	int totalTerritorios = 0;
 	int idAtacante, idDefensor;
+	srand(time(NULL));
 
 	// ===== Iniciando cadastro de tropas =====
 	int qtd_cad;
@@ -86,7 +112,7 @@ int main() {
 	limparBufferEntrada();
 
 	// Alocando memória 
-	tropas = (struct Territorio *) calloc(totalTerritorios, sizeof(struct Territorio));
+	tropas = (struct Territorio *) calloc(qtd_cad, sizeof(struct Territorio));
 	if (tropas == NULL) {
 		printf("Erro: falha ao alocar memória.\n");
 		return 1;
@@ -127,6 +153,9 @@ int main() {
 				listarTerritorios(tropas, &totalTerritorios);
 			};
 		};
+		printf("Pressione Enter para contiuar...");
+		getchar();
 		
 	} while (idAtacante != 0);
+	free(tropas);
 };
